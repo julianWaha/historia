@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histor'IA - Le lien réinventé</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Lora:ital,wght@1,500&display=swap" rel="stylesheet">
+    <style>
+        /* --- VARIABLES & RESET --- */
+        :root {
+            --col-deep-blue: #1A3654;
+            --col-teal: #247375;
+            --col-green: #379F7A;
+            --col-light-green: #C9E4CA;
+            --col-bg: #F0F7F4;
+            --col-white: #FFFFFF;
+            
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --shadow: 0 10px 30px rgba(26, 54, 84, 0.1);
+            --shadow-hover: 0 20px 40px rgba(26, 54, 84, 0.2);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--col-bg);
+            color: var(--col-deep-blue);
+            overflow-x: hidden;
+        }
+
+        /* --- BACKGROUND ANIMATION --- */
+        .bg-shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.6;
+            animation: float 10s infinite ease-in-out;
+        }
+        .shape-1 { background: var(--col-light-green); width: 500px; height: 500px; top: -100px; left: -100px; }
+        .shape-2 { background: var(--col-teal); width: 400px; height: 400px; bottom: 10%; right: -50px; animation-delay: 2s; opacity: 0.4; }
+        .shape-3 { background: var(--col-green); width: 300px; height: 300px; top: 40%; left: 30%; animation-delay: 4s; opacity: 0.3; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(20px, -40px); }
+            100% { transform: translate(0, 0); }
+        }
+
+        /* --- LAYOUT --- */
+        header {
+            padding: 2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--col-teal);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo span { color: var(--col-green); }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--col-deep-blue), var(--col-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--col-teal);
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+
+        /* --- DEMO SECTION --- */
+        .demo-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            min-height: 80vh;
+        }
+
+        .family-badge {
+            background: var(--col-deep-blue);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile-selector {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            background: var(--glass-bg);
+            padding: 10px;
+            border-radius: 60px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .profile-btn {
+            border: none;
+            background: transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 40px;
+            transition: all 0.3s ease;
+            opacity: 0.6;
+        }
+
+        .profile-btn.active {
+            background: var(--col-light-green);
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        .avatar {
+            width: 50px; height: 50px; border-radius: 50%; object-fit: cover; margin-bottom: 5px; border: 2px solid var(--col-teal);
+        }
+
+        .profile-name { font-size: 0.9rem; font-weight: 600; color: var(--col-deep-blue); }
+
+        /* --- MOCKUP --- */
+        .mockup-container {
+            width: 350px; height: 700px;
+            background: var(--col-deep-blue);
+            border-radius: 40px;
+            padding: 15px;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            border: 4px solid #0f2236;
+        }
+
+        .screen {
+            background: var(--col-white); width: 100%; height: 100%; border-radius: 30px; overflow: hidden; position: relative; display: flex; flex-direction: column;
+        }
+
+        .app-header {
+            padding: 20px; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(to right, var(--col-bg), white);
+        }
+        .app-logo { font-weight: 700; color: var(--col-teal); font-size: 1.1rem; }
+        .menu-icon { width: 24px; height: 2px; background: var(--col-deep-blue); position: relative; }
+        .menu-icon::before, .menu-icon::after { content:''; position: absolute; width: 100%; height: 100%; background: inherit; left:0; }
+        .menu-icon::before { top: -6px; } .menu-icon::after { top: 6px; }
+
+        .screen-content { flex: 1; padding: 20px; display: none; flex-direction: column; animation: fadeIn 0.5s ease; }
+        .screen-content.active-screen { display: flex; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* UI Elements inside phone */
+        .greeting { font-size: 1.5rem; color: var(--col-deep-blue); margin-bottom: 20px; }
+        .senior-card {
+            background: linear-gradient(135deg, var(--col-teal), var(--col-green)); color: white; border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(36, 115, 117, 0.3);
+        }
+        .record-btn-container { position: relative; width: 80px; height: 80px; margin: 20px auto; }
+        .record-btn {
+            width: 80px; height: 80px; border-radius: 50%; background: white; border: none; color: var(--col-teal); font-size: 1.5rem; cursor: pointer; z-index: 2; position: relative; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: transform 0.2s;
+        }
+        .record-btn:active { transform: scale(0.95); }
+        .pulse-ring {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 50%; border: 2px solid rgba(255,255,255,0.6); animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.6); opacity: 0; } }
+
+        .podcast-player { background: var(--col-deep-blue); color: white; border-radius: 20px; padding: 20px; text-align: center; }
+        .album-art {
+            width: 100%; height: 150px; background: var(--col-light-green); border-radius: 15px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;
+        }
+        .waveform { display: flex; align-items: center; justify-content: center; gap: 3px; height: 30px; margin: 15px 0; }
+        .bar { width: 4px; background: var(--col-green); border-radius: 2px; animation: wave 1s infinite ease-in-out; }
+        .bar:nth-child(2n) { animation-duration: 0.8s; height: 15px; } .bar:nth-child(3n) { animation-duration: 1.2s; height: 25px; }
+        @keyframes wave { 0%, 100% { height: 10px; opacity: 0.5; } 50% { height: 25px; opacity: 1; } }
+
+        .story-book { background: #FFF; border: 2px solid var(--col-light-green); border-radius: 20px; padding: 15px; text-align: center; }
+        .story-img-container { width: 100%; height: 180px; border-radius: 15px; background: #f0f0f0; margin-bottom: 15px; overflow: hidden; position: relative; }
+        .ai-badge { position: absolute; top: 10px; right: 10px; background: var(--col-green); color: white; font-size: 0.6rem; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; }
+        .story-text { font-family: 'Lora', serif; font-size: 1.1rem; color: #333; line-height: 1.5; margin-bottom: 15px; }
+        .kid-btn { background: var(--col-teal); color: white; border: none; padding: 10px 20px; border-radius: 50px; font-weight: bold; width: 100%; cursor: pointer; transition: 0.3s; }
+        .kid-btn:hover { background: var(--col-deep-blue); }
+
+        .notification {
+            position: absolute; top: 60px; left: 50%; transform: translateX(-50%); background: rgba(26, 54, 84, 0.9); color: white; padding: 10px 20px; border-radius: 20px; font-size: 0.8rem; opacity: 0; transition: 0.3s; pointer-events: none; width: 90%; text-align: center; z-index: 100;
+        }
+        .notification.show { top: 70px; opacity: 1; }
+
+        /* --- PRICING SECTION --- */
+        .pricing-section {
+            padding: 5rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--col-deep-blue);
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--col-teal);
+            margin-bottom: 4rem;
+            font-size: 1.1rem;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 1rem;
+        }
+
+        .price-card {
+            background: var(--col-white);
+            border-radius: 24px;
+            padding: 2.5rem 2rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            border: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .price-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .price-card.featured {
+            border: 2px solid var(--col-green);
+            background: linear-gradient(to bottom, #F9FFFC, #FFFFFF);
+        }
+
+        .badge-popular {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--col-green);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .plan-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--col-deep-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .plan-desc {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 2rem;
+            min-height: 40px;
+        }
+
+        .price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--col-teal);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: baseline;
+        }
+
+        .price span {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #888;
+            margin-left: 5px;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-bottom: 2.5rem;
+            flex-grow: 1; /* Pushes button to bottom */
+        }
+
+        .features-list li {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.95rem;
+            color: #444;
+            line-height: 1.4;
+        }
+
+        .check-icon {
+            color: var(--col-green);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .cross-icon {
+            color: #CCC;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .plan-btn {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.3s;
+            text-decoration: none;
+            display: block;
+        }
+
+        .btn-outline {
+            border: 2px solid var(--col-teal);
+            color: var(--col-teal);
+            background: transparent;
+        }
+        .btn-outline:hover { background: rgba(36, 115, 117, 0.1); }
+
+        .btn-fill {
+            background: var(--col-deep-blue);
+            color: white;
+            border: none;
+        }
+        .btn-fill:hover { background: var(--col-teal); }
+
+        /* --- CTA SECTION --- */
+        .cta-section {
+            background: linear-gradient(135deg, var(--col-deep-blue), var(--col-teal));
+            padding: 5rem 1rem;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            margin-top: 4rem;
+        }
+        
+        .cta-content {
+            position: relative;
+            z-index: 2;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cta-title {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-text {
+            font-size: 1.1rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+        }
+
+        .cta-btn-main {
+            background: var(--col-light-green);
+            color: var(--col-deep-blue);
+            padding: 18px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            display: inline-block;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .cta-btn-main:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            background: white;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+    <div class="bg-shape shape-3"></div>
+
+    <header>
+        <div class="logo">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#379F7A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 17L12 22L22 17" stroke="#247375" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 12L12 17L22 12" stroke="#1A3654" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Histor'<span>IA</span>
+        </div>
+        <nav>
+            </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Vos souvenirs deviennent<br>l'héritage de demain.</h1>
+        <p>L'application qui transforme la mémoire des aînés en podcasts et livres illustrés pour toute la famille.</p>
+    </section>
+
+    <section class="demo-section">
+        
+        <div class="family-badge">
+            <span>●</span> Espace Famille Cuvelier
+        </div>
+
+        <div class="profile-selector">
+            <button class="profile-btn active" onclick="switchProfile('rene')">
+                <img src="https://api.dicebear.com/9.x/toon-head/svg?seed=Jude&eyebrows=happy&eyes=happy,humble,wide,wink&hair[]&mouth=agape,angry,laugh,smile" class="avatar" alt="René">
+                <span class="profile-name">René (82 ans)</span>
+            </button>
+            <button class="profile-btn" onclick="switchProfile('melanie')">
+                <img src="https://api.dicebear.com/9.x/toon-head/svg?seed=Jack&eyebrows=happy&eyes=happy&mouth=laugh,smile" class="avatar" alt="Mélanie">
+                <span class="profile-name">Mélanie (45 ans)</span>
+            </button>
+            <button class="profile-btn" onclick="switchProfile('titouan')">
+                <img src="https://api.dicebear.com/9.x/adventurer/svg?seed=Brian" class="avatar" alt="Titouan">
+                <span class="profile-name">Titouan (8 ans)</span>
+            </button>
+        </div>
+
+        <div class="mockup-container">
+            <div class="screen">
+                
+                <div id="notif-popup" class="notification">Traitement IA en cours...</div>
+
+                <div class="app-header">
+                    <div class="menu-icon"></div>
+                    <div class="app-logo">Histor'IA</div>
+                    <div style="width:24px; height:24px; background:#C9E4CA; border-radius:50%"></div>
+                </div>
+
+                <div id="screen-rene" class="screen-content active-screen">
+                    <h2 class="greeting">Bonjour René 👋</h2>
+                    <p style="color: #666; margin-bottom: 20px;">Quoi de neuf aujourd'hui ?</p>
+                    
+                    <div class="senior-card">
+                        <h3>Raconter ma journée</h3>
+                        <p style="font-size: 0.9rem; opacity: 0.9; margin-top: 5px;">Appuyez pour parler</p>
+                        <div class="record-btn-container" onclick="triggerAction('recording')">
+                            <div class="pulse-ring"></div>
+                            <button class="record-btn">🎤</button>
+                        </div>
+                    </div>
+
+                    <button onclick="switchProfile('rene-msg')" style="width: 100%; padding: 12px; background: var(--col-teal); color: white; border: none; border-radius: 12px; margin-bottom: 15px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <span>✉️</span> Voir le message de Mélanie
+                    </button>
+
+                    <div style="background: #fff; border-radius: 15px; padding: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+                        <h4 style="color:var(--col-teal); margin-bottom: 10px;">Derniers souvenirs</h4>
+                        <div style="display:flex; gap:10px; align-items:center;">
+                            <div style="background:var(--col-light-green); padding:8px; border-radius:8px;">📅</div>
+                            <div style="font-size:0.8rem;">
+                                <strong>La pêche en 1965</strong><br>
+                                <span style="color:#888">Écouté par Mélanie</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="screen-rene-msg" class="screen-content">
+                    <h2 class="greeting" style="font-size: 1.2rem;">Message de Mélanie</h2>
+                    <div style="background: var(--col-light-green); border-radius: 15px; padding: 20px; margin-bottom: 20px; position: relative;">
+                        <p style="font-size: 1rem; color: var(--col-deep-blue); line-height: 1.4; font-style: italic;">
+                            "Coucou Papa ! Ma journée au bureau s'est bien passée. On a enfin terminé le gros projet ! J'ai hâte de te voir ce week-end pour que tu me racontes encore tes histoires de pêche. Bisous !"
+                        </p>
+                        <span style="font-size: 0.7rem; color: var(--col-teal); display: block; margin-top: 15px; text-align: right;">Envoyé à 17:45</span>
+                    </div>
+                    <button class="kid-btn" onclick="switchProfile('rene')">Retour</button>
+                </div>
+
+                <div id="screen-melanie" class="screen-content">
+                    <h2 class="greeting" style="font-size: 1.2rem;">Le fil des générations</h2>
+                    
+                    <div class="podcast-player">
+                        <div class="album-art">
+                            <div style="position: absolute; width:100%; height:100%; background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);"></div>
+                            <span style="z-index:2; font-size: 3rem;">💕</span>
+                            <div class="ai-badge" style="top:10px; left:10px; right:auto;">Généré par IA</div>
+                        </div>
+                        <h3>Ma première rencontre avec ta mère</h3>
+                        <p style="font-size: 0.8rem; opacity: 0.8;">Épisode généré le 30 Janvier</p>
+                        
+                        <div class="waveform">
+                            <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                            <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                            <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                            <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                        </div>
+
+                        <div class="play-controls">
+<button onclick="window.open('https://www.youtube.com/watch?v=XHq9DHqfcHE', '_blank')" style="background:var(--col-green); border:none; width:50px; height:50px; border-radius:50%; color:white; font-size:1.2rem; cursor:pointer;">▶</button>                        </div>
+                    </div>
+
+                    <button style="margin-top: 20px; width: 100%; padding: 15px; border: 2px dashed var(--col-teal); background: transparent; border-radius: 15px; color: var(--col-teal); cursor: pointer;">
+                        + Partager mon quotidien
+                    </button>
+                </div>
+
+                <div id="screen-titouan" class="screen-content">
+                    <h2 class="greeting" style="font-size: 1.2rem;">La bibliothèque de Papy</h2>
+
+                    <div class="story-book">
+                        <div class="story-img-container">
+                            <div style="width:100%; height:100%; background: #a8d5ba; display: flex; align-items: center; justify-content: center;">
+                                <span style="font-size: 3rem;">🚜</span>
+                            </div>
+                            <div class="ai-badge">Illustré par IA</div>
+                        </div>
+                        <h3>Papy à la ferme</h3>
+                        <p class="story-text">
+                            "La ferme était immense avec ses murs en pierre..."
+                        </p>
+                        <button class="kid-btn" onclick="window.open('https://gemini.google.com/share/3fc52577596a', '_blank')">Lire la suite</button>
+                    </div>
+
+                    <div style="margin-top: 15px; display: flex; gap: 10px; overflow-x: auto;">
+                        <div style="min-width: 80px; height: 80px; background: #EEE; border-radius: 10px; display: flex; align-items: center; justify-content: center;">🐓</div>
+                        <div style="min-width: 80px; height: 80px; background: #EEE; border-radius: 10px; display: flex; align-items: center; justify-content: center;">🐟</div>
+                        <div style="min-width: 80px; height: 80px; background: #EEE; border-radius: 10px; display: flex; align-items: center; justify-content: center;">⚽</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing-section">
+        <h2 class="section-title">Choisissez votre modèle de transmission</h2>
+        <p class="section-subtitle">Des offres adaptées pour préserver l'histoire de chaque famille.</p>
+
+        <div class="pricing-grid">
+            
+            <div class="price-card">
+                <div class="plan-name">Racines</div>
+                <div class="plan-desc">L'essentiel pour ne rien oublier, sans barrière financière.</div>
+                <div class="price">Gratuit</div>
+                <ul class="features-list">
+                    <li><span class="check-icon">✓</span> Enregistrement vocal illimité</li>
+                    <li><span class="check-icon">✓</span> Transcription textuelle simple</li>
+                    <li><span class="check-icon">✓</span> Accès pour 2 membres de la famille</li>
+                    <li><span class="check-icon">✓</span> Podcast format Standard (brut)</li>
+                    <li><span class="check-icon">✓</span> Messages texte vers l'aîné</li>
+                    <li><span class="cross-icon">×</span> Pas de montage IA ni musique</li>
+                </ul>
+                <a href="#" class="plan-btn btn-outline">Commencer</a>
+            </div>
+
+            <div class="price-card">
+                <div class="plan-name">Héritage Pro</div>
+                <div class="plan-desc">Transformez les souvenirs en expérience immersive de haute qualité.</div>
+                <div class="price">9,99€ <span>/mois</span></div>
+                <ul class="features-list">
+                    <li><span class="check-icon">✓</span> <strong>IA Montage Audio & Musique</strong></li>
+                    <li><span class="check-icon">✓</span> <strong>Clonage Vocal Sécurisé</strong></li>
+                    <li><span class="check-icon">✓</span> 5 Histoires illustrées /mois</li>
+                    <li><span class="check-icon">✓</span> Exports MP3 haute définition</li>
+                    <li><span class="check-icon">✓</span> Stockage Cloud à vie</li>
+                    <li><span class="check-icon">✓</span> Accès pour 2 membres</li>
+                </ul>
+                <a href="#" class="plan-btn btn-fill">Choisir Héritage</a>
+            </div>
+
+            <div class="price-card featured">
+                <div class="badge-popular">Meilleur Choix</div>
+                <div class="plan-name">Tribu</div>
+                <div class="plan-desc">L'expérience complète pour connecter tout l'arbre généalogique.</div>
+                <div class="price">19,99€ <span>/mois</span></div>
+                <ul class="features-list">
+                    <li><span class="check-icon">✓</span> <strong>Comptes illimités pour la famille</strong></li>
+                    <li><span class="check-icon">✓</span> <strong>Cadre Connecté synchronisé</strong></li>
+                    <li><span class="check-icon">✓</span> Livres de conte illimités (IA)</li>
+                    <li><span class="check-icon">✓</span> Arbre Généalogique Interactif</li>
+                    <li><span class="check-icon">✓</span> -20% sur les livres imprimés</li>
+                    <li><span class="check-icon">✓</span> Toutes les options Héritage Pro</li>
+                </ul>
+                <a href="#" class="plan-btn btn-fill" style="background: var(--col-green);">Rejoindre la Tribu</a>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="bg-shape shape-2" style="top:-50px; right:0; opacity:0.3;"></div>
+        <div class="cta-content">
+            <h2 class="cta-title">N'attendez pas que les souvenirs s'effacent.</h2>
+            <p class="cta-text">Commencez dès aujourd'hui à capturer la voix de vos aînés et créez le plus beau des héritages pour les générations futures.</p>
+            <a href="#" class="cta-btn-main">Passer à Histor'IA maintenant</a>
+        </div>
+    </section>
+
+    <script>
+        function switchProfile(profile) {
+            document.querySelectorAll('.profile-btn').forEach(btn => btn.classList.remove('active'));
+            if(profile === 'rene') document.querySelectorAll('.profile-btn')[0].classList.add('active');
+            if(profile === 'melanie') document.querySelectorAll('.profile-btn')[1].classList.add('active');
+            if(profile === 'titouan') document.querySelectorAll('.profile-btn')[2].classList.add('active');
+
+            document.querySelectorAll('.screen-content').forEach(screen => screen.classList.remove('active-screen'));
+            document.getElementById('screen-' + profile).classList.add('active-screen');
+        }
+
+        function triggerAction(action) {
+            const notif = document.getElementById('notif-popup');
+            
+            if (action === 'recording') {
+                notif.innerText = "🎙️ Enregistrement... L'IA écoute René.";
+            } else if (action === 'playing') {
+                notif.innerText = "🎧 Lecture du podcast optimisé...";
+            } else if (action === 'reading') {
+                notif.innerText = "📖 Génération de la page suivante...";
+            }
+
+            notif.classList.add('show');
+            setTimeout(() => { notif.classList.remove('show'); }, 2500);
+        }
+    </script>
+
+    
+</body>
+</html>
